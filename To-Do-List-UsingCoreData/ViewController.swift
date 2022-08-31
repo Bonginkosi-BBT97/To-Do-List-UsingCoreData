@@ -8,23 +8,32 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
-
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, isChecked{
+    func toggleIsComplete(for cell: UITableViewCell){
+        
+        if let indexPath = tableView.indexPath(for: cell) {
+            
+            toggleIsComplete(for: indexPath.row)
+            tableView.reloadData()
+        }
+    }
     //Switch for archiving
     
+    @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var archivingSwitch: UISwitch!
     
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    let tableView: UITableView = {
+    
+    /*let tableView: UITableView = {
         
         let table = UITableView()
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
         return table
-    }()
+    }()*/
     
     //A global variable that will drive the number of cells in our table view
     
@@ -190,16 +199,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         dateFormatter.dateFormat = "yyyy-MM-dd "
         
         let model =  models[indexPath.row]
-        let cell =  tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        //cell.textLabel?.text = model.name
-        cell.textLabel?.text = "\(model.name!) - \(dateFormatter.string(from: model.createdAt!))"
+        let cell =  tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? customTableViewCell
+        cell?.setCell(isMarked: model.isChecked)
+        cell?.textLabel?.text = model.name
+       // cell.textLabel?.text = "\(model.name!) - \(dateFormatter.string(from: model.createdAt!))"
         
+        cell?.isCompleteDelegate = self
+        
+        //cell.detailTextLabel?.text = "\(model.createdAt!)"
          
         //MARK: Checking items as done on the list
         
-        cell.accessoryType = model.isChecked ? .checkmark : .none
+       // cell.accessoryType = model.isChecked ? .checkmark : .none
         
-        return cell
+        return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -251,22 +264,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("Could not fetch items")
             }
             
-            
         }else {
             
             request.predicate = NSPredicate(format: "isArchived == 0")
             
-            
-            
-            
             do {
             models = try context.fetch(request)
-                
                 
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-            
             }
             catch {
                 
@@ -275,9 +282,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("Could not fetch items")
             }
         }
-        
-        
-        
     }
     
     //This function below creates an item
@@ -349,6 +353,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableView.reloadData()
         
+    }
+    
+    func toggleIsComplete(for index: Int){
+        models[index].isChecked.toggle()
+        
+        do{
+            try context.save()
+        }
+        catch{
+        }
     }
 }
 

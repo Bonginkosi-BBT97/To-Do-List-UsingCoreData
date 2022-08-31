@@ -16,6 +16,7 @@
 		F61D1E0C28B49EE0005D4412 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F61D1E0A28B49EE0005D4412 /* LaunchScreen.storyboard */; };
 		F61D1E1528B4A1AE005D4412 /* ToDoListItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61D1E1328B4A1AE005D4412 /* ToDoListItem+CoreDataClass.swift */; };
 		F61D1E1628B4A1AE005D4412 /* ToDoListItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61D1E1428B4A1AE005D4412 /* ToDoListItem+CoreDataProperties.swift */; };
+		F68CC10428BF6DB60002085C /* customTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68CC10328BF6DB60002085C /* customTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		F61D1E0D28B49EE0005D4412 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F61D1E1328B4A1AE005D4412 /* ToDoListItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoListItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		F61D1E1428B4A1AE005D4412 /* ToDoListItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToDoListItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		F68CC10328BF6DB60002085C /* customTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				F61D1DFE28B49EDE005D4412 /* SceneDelegate.swift */,
 				F61D1E0028B49EDE005D4412 /* ViewController.swift */,
 				F61D1E0228B49EDE005D4412 /* Main.storyboard */,
+				F68CC10328BF6DB60002085C /* customTableViewCell.swift */,
 				F61D1E0828B49EE0005D4412 /* Assets.xcassets */,
 				F61D1E0A28B49EE0005D4412 /* LaunchScreen.storyboard */,
 				F61D1E0D28B49EE0005D4412 /* Info.plist */,
@@ -155,6 +158,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F68CC10428BF6DB60002085C /* customTableViewCell.swift in Sources */,
 				F61D1E0128B49EDE005D4412 /* ViewController.swift in Sources */,
 				F61D1E0728B49EDE005D4412 /* To_Do_List_UsingCoreData.xcdatamodeld in Sources */,
 				F61D1DFD28B49EDE005D4412 /* AppDelegate.swift in Sources */,
