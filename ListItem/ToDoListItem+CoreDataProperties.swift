@@ -21,6 +21,7 @@ extension ToDoListItem {
     @NSManaged public var name: String?
     @NSManaged public var createdAt: Date?
     @NSManaged public var isChecked: Bool
+    @NSManaged public var isArchived: Bool
    //MARK: NSManaged
     /*
      - Anything you work with in coredata needs to be managed by NSManaged object

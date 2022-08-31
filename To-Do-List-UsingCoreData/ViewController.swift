@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
@@ -37,7 +38,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         switchIsOn()
         
         view.addSubview(tableView)
-        getAllItems() //By calling this function here the data will persist--- meaning it will be available
+        getAllItems() //By calling this function here the data will persist
         tableView.delegate = self
         tableView.dataSource = self
         tableView.frame = view.bounds
@@ -56,10 +57,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if (archivingSwitch.isOn){
             title = "Archived Items"
+            getAllItems()
             
         }else {
             
-            title = "All To-Do Items"
+            title = "All Items"
+            getAllItems()
         }
         
     }
@@ -81,6 +84,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             
             self?.createitems(name: text)
+            self?.tableView.reloadData()
         }))
         
         present(alert, animated: true)
@@ -97,12 +101,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-       let deleteAction = UITableViewRowAction(style: .destructive, title: "Archive"){ _, indexPath in
+       let deleteAction = UITableViewRowAction(style: .default, title: "Archive"){ _, indexPath in
            
-        
-           self.models.remove(at: indexPath.row)
-           self.tableView.deleteRows(at: [indexPath], with: .automatic)
-           
+           self.models[indexPath.row].isArchived = !self.models[indexPath.row].isArchived
+           print("succeeded")
+//           self.models.remove(at: indexPath.row)
+//           self.tableView.deleteRows(at: [indexPath], with: .automatic)
+           self.switchIsOn()
+           tableView.reloadData()
         }
         
         //tableView.deselectRow(at: indexPath, animated: true)
@@ -182,8 +188,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let model =  models[indexPath.row]
         let cell =  tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = model.name
-        //cell.textLabel?.text = "\(model.name!) - \(model.createdAt!)"
+        //cell.textLabel?.text = model.name
+        cell.textLabel?.text = "\(model.name!) - \(model.createdAt!)"
         
          
         //MARK: Checking items as done on the list
@@ -217,22 +223,57 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //The function below gets all the items that are saved
     
     func getAllItems(){
+        let request: NSFetchRequest<ToDoListItem> = ToDoListItem.fetchRequest()
         
-        do {
-        models = try context.fetch(ToDoListItem.fetchRequest())
+        
+        if archivingSwitch.isOn {
             
             
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            request.predicate = NSPredicate(format: "isArchived == 1")
+            
+            
+            do {
+            models = try context.fetch(request)
+                
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            
             }
+            catch {
+                
+                //Error
+                
+                print("Could not fetch items")
+            }
+            
+            
+        }else {
+            
+            request.predicate = NSPredicate(format: "isArchived == 0")
+            
+            
+            
+            
+            do {
+            models = try context.fetch(request)
+                
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            
+            }
+            catch {
+                
+                //Error
+                
+                print("Could not fetch items")
+            }
+        }
         
-        }
-        catch {
-            
-            //Error
-            
-            print("Could not fetch items")
-        }
+        
         
     }
     
@@ -242,6 +283,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let newItem = ToDoListItem(context: context)
         newItem.name = name
         newItem.createdAt = Date()
+        newItem.isChecked = false
+        newItem.isArchived = false
         
         do{
             try context.save()
@@ -301,7 +344,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         switchIsOn()
         
-        
+        tableView.reloadData()
         
     }
 }
