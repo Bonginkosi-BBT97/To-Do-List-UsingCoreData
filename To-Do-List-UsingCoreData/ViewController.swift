@@ -186,10 +186,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd "
+        
         let model =  models[indexPath.row]
         let cell =  tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         //cell.textLabel?.text = model.name
-        cell.textLabel?.text = "\(model.name!) - \(model.createdAt!)"
+        cell.textLabel?.text = "\(model.name!) - \(dateFormatter.string(from: model.createdAt!))"
         
          
         //MARK: Checking items as done on the list
