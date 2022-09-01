@@ -103,7 +103,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let item = models[indexPath.row]
         
         
-        //Archive Button
+        //Start Archive Button
        let archiveAction = UITableViewRowAction(style: .default, title: "Archive"){ _, indexPath in
            
            self.models[indexPath.row].isArchived = !self.models[indexPath.row].isArchived
@@ -112,8 +112,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
            tableView.reloadData()
         }
         
+        //End Archive Button
         
-        //Delete Button
+        
+        //Start Delete Button
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete"){ _, indexPath in
             
             
@@ -134,9 +136,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             tableView.reloadData()
             
          }
+        //End Delete Button
         
-        
-        //Edit button
+        //Start Edit button
         let editAction = UITableViewRowAction(style: .default, title: "Edit"){ _, indexPath in
             
             
@@ -169,7 +171,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         archiveAction.backgroundColor = .green
         editAction.backgroundColor = .blue
         
-      
+      //End Edit button
         
         
         return [archiveAction, deleteAction, editAction]
@@ -186,7 +188,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd "
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         
         let model =  models[indexPath.row]
         let cell =  tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? customTableViewCell
