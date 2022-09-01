@@ -27,14 +27,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     
-    /*let tableView: UITableView = {
-        
-        let table = UITableView()
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
-        return table
-    }()*/
-    
     //A global variable that will drive the number of cells in our table view
     
     private var models = [ToDoListItem]()
@@ -75,9 +67,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
     }
-
-   
-    
+       
     @objc private func didTapAdd(){
         let alert = UIAlertController(title: "New Item" ,
                                       message: "Enter new item",
@@ -114,22 +104,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
            
            self.models[indexPath.row].isArchived = !self.models[indexPath.row].isArchived
            print("succeeded")
-//           self.models.remove(at: indexPath.row)
-//           self.tableView.deleteRows(at: [indexPath], with: .automatic)
            self.switchIsOn()
            tableView.reloadData()
         }
         
-        //tableView.deselectRow(at: indexPath, animated: true)
         let item = models[indexPath.row]
         
-        
-        //Start: Section for checking items in the list as done
-        
-        //item.isChecked = !item.isChecked
-        //tableView.reloadData()
-        
-        //End: Section for checking items in the list as done
+    
         
         let sheet = UIAlertController(title: "Changes" ,
                                       message: nil,
@@ -189,6 +170,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     //MARK: End Section : Swipe functionality
+    
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models.count
     }
@@ -201,8 +185,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let model =  models[indexPath.row]
         let cell =  tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? customTableViewCell
         cell?.setCell(isMarked: model.isChecked)
-        cell?.textLabel?.text = model.name
-       // cell.textLabel?.text = "\(model.name!) - \(dateFormatter.string(from: model.createdAt!))"
+        //cell?.textLabel?.text = model.name
+       cell?.textLabel?.text = "\(model.name!) - \(dateFormatter.string(from: model.createdAt!))"
         
         cell?.isCompleteDelegate = self
         
@@ -223,7 +207,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //Start: Section for checking items in the list as done
         
-        item.isChecked = !item.isChecked
+        //item.isChecked = !item.isChecked
         tableView.reloadData()
         
         //End: Section for checking items in the list as done
