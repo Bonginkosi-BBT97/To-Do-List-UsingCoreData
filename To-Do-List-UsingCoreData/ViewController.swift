@@ -100,7 +100,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-       let deleteAction = UITableViewRowAction(style: .default, title: "Archive"){ _, indexPath in
+        let item = models[indexPath.row]
+        
+        
+        //Archive Button
+       let archiveAction = UITableViewRowAction(style: .default, title: "Archive"){ _, indexPath in
            
            self.models[indexPath.row].isArchived = !self.models[indexPath.row].isArchived
            print("succeeded")
@@ -108,17 +112,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
            tableView.reloadData()
         }
         
-        let item = models[indexPath.row]
         
-    
+        //Delete Button
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete"){ _, indexPath in
+            
+            
+            let sheet = UIAlertController(title: "Are you sure you want to delete this item from the list?" ,
+                                          message: nil,
+                                          preferredStyle: .alert)
+            
+            
+            sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
+            sheet.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
+                
+               
+                self.deleteItem(item: item)
+                 
+            }))
+            self.present(sheet, animated: true)
+            
+            tableView.reloadData()
+            
+         }
         
-        let sheet = UIAlertController(title: "Changes" ,
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
         
-        
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
-        sheet.addAction(UIAlertAction(title: "Edit", style: .default, handler: { _ in
+        //Edit button
+        let editAction = UITableViewRowAction(style: .default, title: "Edit"){ _, indexPath in
+            
+            
             
             let alert = UIAlertController(title: "Edit Item" ,
                                           message: "You Can Edit This Item Here",
@@ -134,39 +155,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     return
                 }
                 
+                
+                
                 self?.updateItem(item: item, changedName: changedName)
             }))
-            
-            self.present(alert, animated: true)
-            
-            
-            
-        }))
-        
-        sheet.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self ] _ in
-            
-            let sheet = UIAlertController(title: "Are you sure you want to delete this item from the list?" ,
-                                          message: nil,
-                                          preferredStyle: .alert)
-            
-            
-            sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
-            sheet.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { _ in
-                
-               
-                self?.deleteItem(item: item)
-                 
-            }))
-            self!.present(sheet, animated: true)
            
             
+            self.present(alert, animated: true)
+            tableView.reloadData()
             
-        } ))
+         }
+    
+        archiveAction.backgroundColor = .green
+        editAction.backgroundColor = .blue
         
-        present(sheet, animated: true)
+      
         
         
-        return [deleteAction]
+        return [archiveAction, deleteAction, editAction]
     }
     
     //MARK: End Section : Swipe functionality
